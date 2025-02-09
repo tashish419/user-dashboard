@@ -16,23 +16,40 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+
 export const login = async (email: string, password: string) => {
-  const response = await api.post("/login", { email, password });
-  if (response.data.token) {
-    localStorage.setItem("token", response.data.token); 
+  try {
+    const response = await api.post("/login", { email, password });
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    }
+    return response.data;
+  } catch (error: any) {
+    console.error("Login Error:", error.response?.data || error.message);
+    throw error.response?.data || { error: "Login failed" };
   }
-  return response.data;
 };
+
 
 export const register = async (email: string, password: string) => {
-  const response = await api.post("/register", { email, password });
-  return response.data;
+  try {
+    const response = await api.post("/register", { email, password });
+    return response.data;
+  } catch (error: any) {
+    console.error("Register Error:", error.response?.data || error.message);
+    throw error.response?.data || { error: "Registration failed" };
+  }
 };
 
 
-export const getUsers = async () => {
-  const response = await api.get("/users");
-  return response.data;
+export const getUsers = async (page: number = 1) => {
+  try {
+    const response = await api.get(`/users?page=${page}`);
+    return response.data;
+  } catch (error: any) {
+    console.error("Get Users Error:", error.response?.data || error.message);
+    throw error.response?.data || { error: "Failed to fetch users" };
+  }
 };
 
 
