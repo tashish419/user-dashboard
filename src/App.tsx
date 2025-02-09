@@ -10,10 +10,12 @@ import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Dashboard from "./components/Dashboard";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const App: React.FC = () => {
   return (
-    <div>
+    <Provider store={store}>
       <Router>
         <Routes>
           <Route path="/" element={<SignIn />} />
@@ -29,7 +31,7 @@ const App: React.FC = () => {
           <Route path="*" element={<Navigate to="/signin" replace />} />
         </Routes>
       </Router>
-    </div>
+    </Provider>
   );
 };
 
